@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 
 const ChatSettingsScreen = props => {
     return <View style={styles.container}>
-        <Text>ChatListScreen</Text>
+        <Text>ChAT SETTING SCREEN</Text>
     </View>
 };
 
