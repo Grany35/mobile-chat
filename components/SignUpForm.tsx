@@ -1,22 +1,12 @@
 import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import React from "react";
-import {
-  validateEmail,
-  validatePassword,
-  validateString,
-} from "../utils/validationConstraints";
+import { validateInput } from "../utils/actions/formActions";
 import Input from "./Input";
 import SubmitButton from "./SubmitButton";
 
 const SignUpFrom = (props) => {
   const inputChangedHandler = (inputId: string, inputValue: string) => {
-    if (inputId === "firstName" || inputId === "lastName") {
-      validateString(inputId, inputValue);
-    } else if (inputId === "email") {
-      validateEmail(inputId, inputValue);
-    } else if (inputId === "password") {
-      validatePassword(inputId, inputValue);
-    }
+    console.log(validateInput(inputId, inputValue))
   };
   return (
     <>
