@@ -1,13 +1,30 @@
 import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useCallback, useReducer } from "react";
 import { validateInput } from "../utils/actions/formActions";
+import { reducer } from "../utils/reducers/formReducer";
 import Input from "./Input";
 import SubmitButton from "./SubmitButton";
 
+const initialState = {
+  inputValidities: {
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+  },
+  formIsValid: false,
+};
+
 const SignUpFrom = (props) => {
-  const inputChangedHandler = (inputId: string, inputValue: string) => {
-    console.log(validateInput(inputId, inputValue))
-  };
+  const [formState, dispatchFormState] = useReducer(reducer, initialState);
+
+  const inputChangedHandler = useCallback(
+    (inputId: string, inputValue: string) => {
+      const result = validateInput(inputId, inputValue);
+      dispatchFormState({ inputId, validationResult: result });
+    },
+    [dispatchFormState]
+  );
   return (
     <>
       <Input
@@ -50,6 +67,7 @@ const SignUpFrom = (props) => {
         title="Sign Up"
         onPress={() => console.log("pressed")}
         style={{ marginTop: 20 }}
+        disabled={!formState.formIsValid}
       />
     </>
   );
