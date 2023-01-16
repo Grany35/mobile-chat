@@ -34,6 +34,7 @@ const SignUpFrom = (props) => {
         iconSize={20}
         iconPack={FontAwesome}
         onInputChange={inputChangedHandler}
+        errorText={formState.inputValidities["firstName"]}
       />
       <Input
         id="lastName"
@@ -42,6 +43,7 @@ const SignUpFrom = (props) => {
         iconSize={20}
         iconPack={FontAwesome}
         onInputChange={inputChangedHandler}
+        errorText={formState.inputValidities["lastName"]}
       />
       <Input
         id="email"
@@ -52,6 +54,7 @@ const SignUpFrom = (props) => {
         iconSize={20}
         iconPack={Ionicons}
         onInputChange={inputChangedHandler}
+        errorText={formState.inputValidities["email"]}
       />
       <Input
         id="password"
@@ -62,6 +65,7 @@ const SignUpFrom = (props) => {
         iconSize={20}
         iconPack={Feather}
         onInputChange={inputChangedHandler}
+        errorText={formState.inputValidities["password"]}
       />
       <SubmitButton
         title="Sign Up"
