@@ -34,7 +34,7 @@ const AuthScreen = (props) => {
                 source={logo}
               />
             </View>
-            {isSignUp ? <SignUpFrom /> : <SignInForm />}
+            {isSignUp ? <SignUpFrom setIsSignUp={setIsSignUp} /> : <SignInForm />}
 
             <TouchableOpacity
               onPress={() => setIsSignUp((prevState) => !prevState)}

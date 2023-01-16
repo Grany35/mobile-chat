@@ -1,6 +1,7 @@
 import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import React, { useCallback, useEffect, useReducer, useState } from "react";
-import { Alert } from "react-native";
+import { ActivityIndicator, Alert } from "react-native";
+import colors from "../constants/colors";
 import { signUp } from "../utils/actions/authActions";
 import { validateInput } from "../utils/actions/formActions";
 import { reducer } from "../utils/reducers/formReducer";
@@ -8,7 +9,7 @@ import Input from "./Input";
 import SubmitButton from "./SubmitButton";
 
 const initialState = {
-  inputValues:{
+  inputValues: {
     firstName: "",
     lastName: "",
     email: "",
@@ -24,14 +25,16 @@ const initialState = {
 };
 
 const SignUpFrom = (props) => {
-  const [error,setError]=useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formState, dispatchFormState] = useReducer(reducer, initialState);
 
-  useEffect(()=>{
-    if(error){
-      Alert.alert("An Error Occurred!",error,[{text:"Okay"}])
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occurred!", error, [{ text: "Okay" }]);
+      setError("");
     }
-  },[error])
+  }, [error]);
 
   const inputChangedHandler = useCallback(
     (inputId: string, inputValue: string) => {
@@ -42,20 +45,22 @@ const SignUpFrom = (props) => {
   );
 
   const authHandler = async() => {
-   try {
-    await signUp(
-      formState.inputValues.firstName,
-      formState.inputValues.lastName,
-      formState.inputValues.email,
-      formState.inputValues.password
-    );
-    setError("");
-   } catch (e) {
-    if (e instanceof Error) {
-      setError(e.message);
+    try {
+      setIsLoading(true);
+      signUp(
+        formState.inputValues.firstName,
+        formState.inputValues.lastName,
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+      setError("");
+      props.setIsSignUp(false);
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+        setIsLoading(false);
+      }
     }
-    
-   }
   };
 
   return (
@@ -65,6 +70,7 @@ const SignUpFrom = (props) => {
         label="First Name"
         icon={"user-o"}
         iconSize={20}
+        autoCapitalize="none"
         iconPack={FontAwesome}
         onInputChange={inputChangedHandler}
         errorText={formState.inputValidities["firstName"]}
@@ -73,6 +79,7 @@ const SignUpFrom = (props) => {
         id="lastName"
         label="Last Name"
         icon={"user-o"}
+        autoCapitalize="none"
         iconSize={20}
         iconPack={FontAwesome}
         onInputChange={inputChangedHandler}
@@ -100,12 +107,20 @@ const SignUpFrom = (props) => {
         onInputChange={inputChangedHandler}
         errorText={formState.inputValidities["password"]}
       />
-      <SubmitButton
-        title="Sign Up"
-        onPress={authHandler}
-        style={{ marginTop: 20 }}
-        disabled={!formState.formIsValid}
-      />
+      {isLoading ? (
+        <ActivityIndicator
+          size={"small"}
+          color={colors.primary}
+          style={{ marginTop: 10 }}
+        />
+      ) : (
+        <SubmitButton
+          title="Sign Up"
+          onPress={authHandler}
+          style={{ marginTop: 20 }}
+          disabled={!formState.formIsValid}
+        />
+      )}
     </>
   );
 };
