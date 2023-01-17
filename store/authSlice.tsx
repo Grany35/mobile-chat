@@ -4,7 +4,7 @@ import {
   UserOperationClaim,
 } from "../utils/interfaces/AuthResponse";
 
-const initialState: AuthResponse = {
+const initialStateRes: AuthResponse = {
   id: null,
   email: null,
   firstName: null,
@@ -39,9 +39,19 @@ const authSlice = createSlice({
       state.lastName = payload.lastName;
       state.id = payload.id;
       state.userOperationClaims = payload.userOperationClaims;
-      console.log("state:", state)
+      state.didTryAutoLogin = true;
     },
-    setDidTryAutoLogin: (state,action) => {
+    setDidTryAutoLogin: (state, action) => {
+      state.didTryAutoLogin = action.payload;
+    },
+    logout: (state: any, action) => {
+      state.accessToken = null;
+      state.email = null;
+      state.expiration = null;
+      state.firstName = null;
+      state.lastName = null;
+      state.id = null;
+      state.userOperationClaims = null;
       state.didTryAutoLogin = action.payload;
     },
   },
@@ -49,4 +59,5 @@ const authSlice = createSlice({
 
 export const authenticate = authSlice.actions.authenticate;
 export const setDidTryAutoLogin = authSlice.actions.setDidTryAutoLogin;
+export const logout = authSlice.actions.logout;
 export default authSlice.reducer;

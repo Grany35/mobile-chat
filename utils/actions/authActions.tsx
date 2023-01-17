@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useState } from "react";
-import { authenticate } from "../../store/authSlice";
+import { authenticate, logout } from "../../store/authSlice";
 import { AuthResponse } from "../interfaces/AuthResponse";
+
+let timer;
 
 export const signUp = (
   firstName: string,
@@ -30,10 +32,23 @@ export const signUp = (
 export const signIn = (email: string, password: string) => {
   return async (dispatch) => {
     try {
-      const result = (await axios.post("http://localhost:5146/api/Auth/Login", {
-        email,
-        password,
-      })).data as AuthResponse;
+      const result = (
+        await axios.post("http://localhost:5146/api/Auth/Login", {
+          email,
+          password,
+        })
+      ).data as AuthResponse;
+
+      const expiryDate = result.expiration
+        ? new Date(result.expiration).getTime()
+        : new Date().getTime();
+      const timeNow = new Date().getTime();
+        const miliSecUntilExpiry = expiryDate - timeNow;
+
+      timer = setTimeout(() => {
+        dispatch(userLogout());
+      }, miliSecUntilExpiry);
+
       dispatch(authenticate(result));
       saveDataToStorage(result);
     } catch (error) {
@@ -51,6 +66,14 @@ export const signIn = (email: string, password: string) => {
   };
 };
 
+export const userLogout = () => {
+  return async (dispatch) => {
+    AsyncStorage.clear();
+    clearTimeout(timer);
+    dispatch(logout(false));
+  };
+};
+
 const saveDataToStorage = (userData: any) => {
   AsyncStorage.setItem("userData", JSON.stringify(userData));
-}
+};

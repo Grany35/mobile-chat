@@ -13,7 +13,6 @@ const StartUpScreen = () => {
 
   useEffect(() => {
     const tryLogin = async () => {
-      console.log("date",new Date().toUTCString());
       const storedAuthData = await AsyncStorage.getItem("userData");
       if (!storedAuthData) {
         dispatch(setDidTryAutoLogin(true));
@@ -28,7 +27,7 @@ const StartUpScreen = () => {
         return;
       }
       const userData = parsedData.id ? await getUserData(parsedData.id) : null;
-      dispatch(authenticate(userData as any));
+      dispatch(authenticate(userData as AuthResponse));
     };
     tryLogin();
   }, []);
