@@ -39,12 +39,14 @@ export const signIn = (email: string, password: string) => {
         })
       ).data as AuthResponse;
 
+      //* Calculate time until token expires
       const expiryDate = result.expiration
         ? new Date(result.expiration).getTime()
         : new Date().getTime();
       const timeNow = new Date().getTime();
-        const miliSecUntilExpiry = expiryDate - timeNow;
+      const miliSecUntilExpiry = expiryDate - timeNow;
 
+      //* Auto logout after token expires
       timer = setTimeout(() => {
         dispatch(userLogout());
       }, miliSecUntilExpiry);
@@ -57,12 +59,6 @@ export const signIn = (email: string, password: string) => {
         console.log(error.message);
       }
     }
-    // .catch((err) => {
-    //   if (err !== null) {
-    //     throw new Error(err.response.data.Message);
-    //   }
-    // })
-    // .finally(dispatch(authenticate(userData)));
   };
 };
 

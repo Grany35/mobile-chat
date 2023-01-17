@@ -12,16 +12,18 @@ import { reducer } from "../utils/reducers/formReducer";
 import Input from "./Input";
 import SubmitButton from "./SubmitButton";
 
+const isTestMode: boolean = true;
+
 const initialState = {
   inputValues: {
-    email: "",
-    password: "",
+    email: isTestMode ? "test@test.com" : "",
+    password: isTestMode ? "Asd159123!" : "",
   },
   inputValidities: {
-    email: false,
-    password: false,
+    email: isTestMode,
+    password: isTestMode,
   },
-  formIsValid: false,
+  formIsValid: isTestMode,
 };
 
 const SignInForm = (props) => {
@@ -73,6 +75,7 @@ const SignInForm = (props) => {
         autoCapitalize="none"
         iconPack={Ionicons}
         onInputChange={inputChangedHandler}
+        value={formState.inputValues.email}
         errorText={formState.inputValidities["email"]}
       />
       <Input
@@ -84,6 +87,7 @@ const SignInForm = (props) => {
         iconSize={20}
         iconPack={Feather}
         onInputChange={inputChangedHandler}
+        value={formState.inputValues.password}
         errorText={formState.inputValidities["password"]}
       />
       {isLoading ? (
