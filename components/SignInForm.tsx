@@ -1,17 +1,15 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { Reducer } from "@reduxjs/toolkit";
-import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import React, { useCallback, useEffect, useReducer, useState } from "react";
 import { ActivityIndicator, Alert } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import colors from "../constants/colors";
 import { signIn } from "../utils/actions/authActions";
 import { validateInput } from "../utils/actions/formActions";
-import { AuthResponse } from "../utils/interfaces/AuthResponse";
 import { reducer } from "../utils/reducers/formReducer";
 import Input from "./Input";
 import SubmitButton from "./SubmitButton";
 
+//* For Fast Login
 const isTestMode: boolean = true;
 
 const initialState = {
