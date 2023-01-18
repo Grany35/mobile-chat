@@ -40,7 +40,6 @@ const authSlice = createSlice({
       state.id = payload.id;
       state.userOperationClaims = payload.userOperationClaims;
       state.didTryAutoLogin = true;
-      console.log("test",state);
     },
     setDidTryAutoLogin: (state, action) => {
       state.didTryAutoLogin = action.payload;
