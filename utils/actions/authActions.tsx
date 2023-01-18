@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import { authenticate, logout } from "../../store/authSlice";
 import { AuthResponse } from "../interfaces/AuthResponse";
+import { UserUpdateModel } from "../interfaces/userUpdateModel";
 
 let timer;
 
@@ -68,6 +69,15 @@ export const userLogout = () => {
     clearTimeout(timer);
     dispatch(logout(false));
   };
+};
+
+export const updateSignedInUserData = async (
+  userId: number,
+  model: UserUpdateModel
+) => {
+  model.id=userId;
+  const url = "http://localhost:5146/api/Users/test";
+  await axios.post(url, model);
 };
 
 const saveDataToStorage = (userData: any) => {

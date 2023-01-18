@@ -73,7 +73,7 @@ const SignInForm = (props) => {
         autoCapitalize="none"
         iconPack={Ionicons}
         onInputChange={inputChangedHandler}
-        value={formState.inputValues.email}
+        initialValue={formState.inputValues.email}
         errorText={formState.inputValidities["email"]}
       />
       <Input
@@ -85,7 +85,7 @@ const SignInForm = (props) => {
         iconSize={20}
         iconPack={Feather}
         onInputChange={inputChangedHandler}
-        value={formState.inputValues.password}
+        initialValue={formState.inputValues.password}
         errorText={formState.inputValidities["password"]}
       />
       {isLoading ? (
