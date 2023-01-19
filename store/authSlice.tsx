@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import backend from "../constants/backend";
 import {
   AuthResponse,
   UserOperationClaim,
@@ -12,6 +13,8 @@ const initialStateRes: AuthResponse = {
   accessToken: null,
   expiration: null,
   userOperationClaims: null,
+  profileImage: null,
+  about:null
 };
 
 interface AuthenticatePayload {
@@ -22,6 +25,8 @@ interface AuthenticatePayload {
   accessToken: string | null;
   expiration: Date | null;
   userOperationClaims: UserOperationClaim[] | null;
+  profileImage: string | null;
+  about:string | null
 }
 
 const authSlice = createSlice({
@@ -40,6 +45,8 @@ const authSlice = createSlice({
       state.id = payload.id;
       state.userOperationClaims = payload.userOperationClaims;
       state.didTryAutoLogin = true;
+      state.profileImage = backend.apiAddress + payload.profileImage;
+      state.about = payload.about;
     },
     setDidTryAutoLogin: (state, action) => {
       state.didTryAutoLogin = action.payload;
@@ -54,9 +61,9 @@ const authSlice = createSlice({
       state.userOperationClaims = null;
       state.didTryAutoLogin = action.payload;
     },
-    updateLoggedInUserData:(state:any,action)=>{
-      state={...state,...action.payload.newData}
-    }
+    updateLoggedInUserData: (state: any, action) => {
+      state = { ...state, ...action.payload.newData };
+    },
   },
 });
 

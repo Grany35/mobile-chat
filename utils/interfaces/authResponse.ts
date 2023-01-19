@@ -6,6 +6,8 @@ export interface AuthResponse {
     accessToken: string | null;
     expiration: Date | null;
     userOperationClaims: UserOperationClaim[]| null;
+    profileImage: string | null;
+    about: string | null;
 };
 
 export interface UserOperationClaim {

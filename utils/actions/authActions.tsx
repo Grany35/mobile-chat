@@ -75,7 +75,7 @@ export const updateSignedInUserData = async (
   userId: number,
   model: UserUpdateModel
 ) => {
-  model.id=userId;
+  model.id = userId;
   const url = "http://localhost:5146/api/Users/update-usersettings";
   await axios.post(url, model);
 };
