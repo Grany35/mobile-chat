@@ -44,18 +44,25 @@ const SignUpFrom = (props) => {
     [dispatchFormState]
   );
 
-  const authHandler = async() => {
+  const authHandler = async () => {
     try {
       setIsLoading(true);
-      signUp(
+       signUp(
+        formState.inputValues.firstName,
+        formState.inputValues.lastName,
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
+      console.log(
         formState.inputValues.firstName,
         formState.inputValues.lastName,
         formState.inputValues.email,
         formState.inputValues.password
       );
       setError("");
-      props.setIsSignUp(false);
+       props.setIsSignUp(false);
     } catch (e) {
+      console.log(e);
       if (e instanceof Error) {
         setError(e.message);
         setIsLoading(false);

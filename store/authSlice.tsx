@@ -45,7 +45,7 @@ const authSlice = createSlice({
       state.id = payload.id;
       state.userOperationClaims = payload.userOperationClaims;
       state.didTryAutoLogin = true;
-      state.profileImage = backend.apiAddress + payload.profileImage;
+      state.profileImage=payload.profileImage?backend.apiAddress + payload.profileImage:payload.profileImage;
       state.about = payload.about;
     },
     setDidTryAutoLogin: (state, action) => {

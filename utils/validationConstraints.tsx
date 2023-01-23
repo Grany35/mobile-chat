@@ -15,7 +15,7 @@ export const validateEmail = (id: string, value: string) => {
   const constraints = {
     presence: { allowEmpty: false },
     email: true,
-    length: { minimum: 3, maximum: 25 },
+    length: { minimum: 3, maximum: 35 },
   };
 
   const validationResult = validate({ [id]: value }, { [id]: constraints });

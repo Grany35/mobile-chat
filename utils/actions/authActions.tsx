@@ -13,21 +13,18 @@ export const signUp = (
   email: string,
   password: string
 ) => {
-  return async (dispatch) => {
-    await axios
-      .post("http://localhost:5146/api/Auth/Register", {
-        firstName,
-        lastName,
-        email,
-        password,
-      })
-      .then((res) => console.log("res:", res))
-      .catch((err) => {
-        if (err !== null) {
-          throw new Error(err.response.data.Message);
-        }
-      });
-  };
+  try {
+    const result = axios.post("http://localhost:5146/api/Auth/Register", {
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+    console.log(result);
+    console.log(password, email, firstName, lastName);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const signIn = (email: string, password: string) => {

@@ -92,7 +92,7 @@ const SettingsScreen = (props) => {
       <PageTitle text="Settings" />
 
       <ScrollView contentContainerStyle={styles.formContainer}>
-        <ProfileImage uri={userData.profileImage} userId={userData.id} size={80} />
+        <ProfileImage showEditButton uri={userData.profileImage} userId={userData.id} size={80} />
 
         <Input
           id="firstName"

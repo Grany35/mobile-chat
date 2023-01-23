@@ -14,19 +14,21 @@ import {
   launchImagePicker,
   uploadImageAsync,
 } from "../utils/imagePickerHelper";
-import { useSelector } from "react-redux";
 import backend from "../constants/backend";
 
 export interface ProfileImageProps {
   size: number | null;
   uri?: string | null;
   userId: number;
+  showEditButton?: boolean;
 }
 
 const ProfileImage = (props: ProfileImageProps) => {
   const source = props.uri ? { uri: props.uri } : initialUserImage;
   const [image, setImage] = useState(source);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const showEditButton = props.showEditButton && props.showEditButton === true;
 
   const pickImage = async () => {
     try {
@@ -48,8 +50,10 @@ const ProfileImage = (props: ProfileImageProps) => {
     }
   };
 
+  const Container:any = showEditButton ? TouchableOpacity : View;
+
   return (
-    <TouchableOpacity onPress={pickImage}>
+    <Container onPress={pickImage}>
       {isLoading ? (
         <View
           style={{
@@ -71,10 +75,12 @@ const ProfileImage = (props: ProfileImageProps) => {
         />
       )}
 
-      <View style={styles.editIconContainer}>
-        <FontAwesome name="pencil" size={15} color={"black"} />
-      </View>
-    </TouchableOpacity>
+      {showEditButton && !isLoading && (
+        <View style={styles.editIconContainer}>
+          <FontAwesome name="pencil" size={15} color={"black"} />
+        </View>
+      )}
+    </Container>
   );
 };
 
