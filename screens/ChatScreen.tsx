@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -15,9 +15,24 @@ import { Feather } from "@expo/vector-icons";
 
 import backgroundImage from "../assets/images/back.jpg";
 import colors from "../constants/colors";
+import { getUserData } from "../utils/actions/userActions";
+import { AuthResponse } from "../utils/interfaces/AuthResponse";
 
 const ChatScreen = (props) => {
   const [messagesText, setMessagesText] = useState<string>("");
+  const [recipientUserData, setRecipientUserData] =
+    useState<AuthResponse | null>(null);
+
+  const chatData = props.route?.params?.newChatData;
+
+  useEffect(() => {
+   const recipientResult= async () => {
+      const result = await getUserData(chatData.users[0]);
+      setRecipientUserData(result ?? null);
+    };
+    recipientResult();
+  }, [props.route?.params]);
+
   const sendMessage = useCallback(() => {
     setMessagesText("");
   }, [messagesText]);
