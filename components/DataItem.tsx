@@ -11,13 +11,14 @@ interface DataItemProps {
   subTitle: string;
   imageUri?: string;
   userId: number;
+  onPress?: () => void;
 }
 
 const DataItem = (props: DataItemProps) => {
   const { title, subTitle, imageUri, userId } = props;
   const imageSource = imageUri ? backend.apiAddress + imageUri : null;
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={props.onPress}>
       <View style={styles.container}>
         <ProfileImage uri={imageSource} size={40} userId={userId} />
 

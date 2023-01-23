@@ -18,12 +18,15 @@ import commonStyles from "../constants/commonStyles";
 import { UserModel } from "../utils/interfaces/userModel";
 import { searchUsers } from "../utils/actions/userActions";
 import DataItem from "../components/DataItem";
+import { useSelector } from "react-redux";
 
 const NewChatScreen = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<UserModel[] | null | undefined>(null);
   const [noResultsFound, setNoResultsFound] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const userData = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -47,7 +50,8 @@ const NewChatScreen = (props) => {
       }
       setIsLoading(true);
 
-      const usersResult = await searchUsers(searchTerm);
+      const usersResult = (await searchUsers(searchTerm)) as UserModel[];
+      delete usersResult[userData.id];
       setUsers(usersResult);
 
       if (users === null || users?.length === 0) {
@@ -60,6 +64,12 @@ const NewChatScreen = (props) => {
     }, 500);
     return () => clearTimeout(delaySearch);
   }, [searchTerm]);
+
+  const userPressed = (userId: number) => {
+    props.navigation.navigate("ChatList", {
+      selectedUserId: userId,
+    });
+  };
 
   return (
     <PageContainer>
@@ -114,6 +124,7 @@ const NewChatScreen = (props) => {
                 imageUri={item.profileImageUrl}
                 title={`${item.firstName} ${item.lastName}`}
                 subTitle={item.about}
+                onPress={() => userPressed(item.id)}
               />
             );
           }}
