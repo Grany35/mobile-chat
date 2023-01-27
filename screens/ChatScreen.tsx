@@ -17,11 +17,14 @@ import backgroundImage from "../assets/images/back.jpg";
 import colors from "../constants/colors";
 import { getUserData } from "../utils/actions/userActions";
 import { AuthResponse } from "../utils/interfaces/AuthResponse";
+import Bubble from "../components/Bubble";
+import PageContainer from "../components/PageContainer";
 
 const ChatScreen = (props) => {
   const [messagesText, setMessagesText] = useState<string>("");
   const [recipientUserData, setRecipientUserData] =
     useState<AuthResponse | null>(null);
+    const [chatId,setChatId]=useState(props.route?.params?.chatId);
 
   const chatData = props.route?.params?.newChatData;
 
@@ -31,24 +34,19 @@ const ChatScreen = (props) => {
       setRecipientUserData(result ?? null);
     };
     recipientResult();
-    
   }, [props.route?.params]);
 
-  useEffect(()=>{
+  useEffect(() => {
     props.navigation.setOptions({
       headerTitle: recipientUserData
-      ? recipientUserData.firstName + " " + recipientUserData.lastName
+        ? recipientUserData.firstName + " " + recipientUserData.lastName
         : "Chat",
     });
-  },[recipientUserData])
+  }, [recipientUserData]);
 
   const sendMessage = useCallback(() => {
     setMessagesText("");
   }, [messagesText]);
-
-  const chatTitle = recipientUserData
-    ? recipientUserData.firstName + " " + recipientUserData.lastName
-    : "Chat";
 
   return (
     <SafeAreaView edges={["right", "left", "bottom"]} style={styles.container}>
@@ -60,7 +58,15 @@ const ChatScreen = (props) => {
         <ImageBackground
           source={backgroundImage}
           style={styles.backgroundImage}
-        ></ImageBackground>
+        >
+          <PageContainer
+            style={{ backgroundColor: "transparent" }}
+          >
+            {
+              !chatId &&<Bubble type="system" text="This is a new chat. Say hi" />
+            }
+          </PageContainer>
+        </ImageBackground>
 
         <View style={styles.inputContainer}>
           <TouchableOpacity
