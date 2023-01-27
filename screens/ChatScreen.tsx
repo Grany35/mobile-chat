@@ -24,7 +24,7 @@ const ChatScreen = (props) => {
   const [messagesText, setMessagesText] = useState<string>("");
   const [recipientUserData, setRecipientUserData] =
     useState<AuthResponse | null>(null);
-    const [chatId,setChatId]=useState(props.route?.params?.chatId);
+  const [chatId, setChatId] = useState(props.route?.params?.chatId);
 
   const chatData = props.route?.params?.newChatData;
 
@@ -45,6 +45,13 @@ const ChatScreen = (props) => {
   }, [recipientUserData]);
 
   const sendMessage = useCallback(() => {
+    try {
+      let id = chatId;
+      if (!id) {
+        //create new chat
+      }
+    } catch (error) {}
+
     setMessagesText("");
   }, [messagesText]);
 
@@ -59,12 +66,10 @@ const ChatScreen = (props) => {
           source={backgroundImage}
           style={styles.backgroundImage}
         >
-          <PageContainer
-            style={{ backgroundColor: "transparent" }}
-          >
-            {
-              !chatId &&<Bubble type="system" text="This is a new chat. Say hi" />
-            }
+          <PageContainer style={{ backgroundColor: "transparent" }}>
+            {!chatId && (
+              <Bubble type="system" text="This is a new chat. Say hi" />
+            )}
           </PageContainer>
         </ImageBackground>
 

@@ -71,10 +71,9 @@ const MainNavigator = (props) => {
       /> */}
       </Stack.Group>
 
-      <Stack.Group screenOptions={{presentation:"containedModal"}}>
+      <Stack.Group screenOptions={{ presentation: "containedModal" }}>
         <Stack.Screen name="NewChat" component={NewChatScreen} />
       </Stack.Group>
-
     </Stack.Navigator>
   );
 };
