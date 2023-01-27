@@ -4,7 +4,6 @@ import { useState } from "react";
 import { authenticate, logout } from "../../store/authSlice";
 import { AuthResponse } from "../interfaces/AuthResponse";
 import { UserUpdateModel } from "../interfaces/userUpdateModel";
-import { createHubConnection } from "./hubActions";
 
 let timer;
 
@@ -37,8 +36,6 @@ export const signIn = (email: string, password: string) => {
           password,
         })
       ).data as AuthResponse;
-
-      createHubConnection(result.accessToken)
 
       //* Calculate time until token expires
       const expiryDate = result.expiration

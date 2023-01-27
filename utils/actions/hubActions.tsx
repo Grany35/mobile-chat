@@ -37,22 +37,3 @@ export const useHubConnection = (accessToken: string) => {
 
   return { hubConnection, createHubConnection, stopHubConnection };
 };
-
-// export const createHubConnection = (accessToken: string) => {
-//  const connection= new HubConnectionBuilder()
-//     .withUrl(backend.hubUrl + "presence", {
-//       accessTokenFactory: () => accessToken,
-//     })
-//     .withAutomaticReconnect()
-//     .build();
-
-//     connection.start().catch((error) => console.log(error));
-
-//     connection.on("UserIsOnline", (userId) => {
-//     console.log(`${userId} 'id li kullanıcı is online`);
-//   });
-
-//   connection.on("UserIsOffline", (userId) => {
-//     console.log(`${userId} 'id li kullanıcı is offline`);
-//   });
-// };
