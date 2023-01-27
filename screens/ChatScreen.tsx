@@ -26,16 +26,29 @@ const ChatScreen = (props) => {
   const chatData = props.route?.params?.newChatData;
 
   useEffect(() => {
-   const recipientResult= async () => {
+    const recipientResult = async () => {
       const result = await getUserData(chatData.users[0]);
       setRecipientUserData(result ?? null);
     };
     recipientResult();
+    
   }, [props.route?.params]);
+
+  useEffect(()=>{
+    props.navigation.setOptions({
+      headerTitle: recipientUserData
+      ? recipientUserData.firstName + " " + recipientUserData.lastName
+        : "Chat",
+    });
+  },[recipientUserData])
 
   const sendMessage = useCallback(() => {
     setMessagesText("");
   }, [messagesText]);
+
+  const chatTitle = recipientUserData
+    ? recipientUserData.firstName + " " + recipientUserData.lastName
+    : "Chat";
 
   return (
     <SafeAreaView edges={["right", "left", "bottom"]} style={styles.container}>
