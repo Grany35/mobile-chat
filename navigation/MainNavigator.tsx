@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, Feather } from "@expo/vector-icons";
 
@@ -8,11 +8,49 @@ import SettingsScreen from "../screens/SettingsScreen";
 import ChatScreen from "../screens/ChatScreen";
 import NewChatScreen from "../screens/NewChatScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AppState } from "react-native";
+import { useSelector } from "react-redux";
+import { useHubConnection } from "../utils/actions/hubActions";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+
+  const [appState, setAppState] = useState(AppState.currentState);
+  const userData = useSelector((state: any) => state.auth);
+
+
+  const { createHubConnection, stopHubConnection } =
+    useHubConnection(userData.accessToken);
+
+  useEffect(() => {
+    if (appState === "active" && userData !== null) {
+      createHubConnection();
+    }
+    if (
+      appState === "background" ||
+      (appState === "inactive" && userData !== null)
+    ) {
+      stopHubConnection();
+    }
+
+    console.log(appState);
+  }, [appState]);
+
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener(
+      "change",
+      (nextAppState) => {
+        setAppState(nextAppState);
+      }
+    );
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
+
+
   return (
     <Tab.Navigator
       screenOptions={{ headerTitle: "", headerShadowVisible: false }}

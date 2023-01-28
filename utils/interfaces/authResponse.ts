@@ -3,7 +3,7 @@ export interface AuthResponse {
     email: string | null;
     firstName: string | null;
     lastName: string | null;
-    accessToken: string ;
+    accessToken: string |null;
     expiration: Date | null;
     userOperationClaims: UserOperationClaim[]| null;
     profileImage: string | null;

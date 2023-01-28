@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import StartUpScreen from "../screens/StartUpScreen";
 import { AppState } from "react-native";
 import { useHubConnection } from "../utils/actions/hubActions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AppNavigator = (props) => {
   const isAuth = useSelector(
@@ -18,40 +19,12 @@ const AppNavigator = (props) => {
     (state: any) => state.auth.didTryAutoLogin
   );
 
-  const [appState, setAppState] = useState(AppState.currentState);
-  const userData = useSelector((state: any) => state.auth);
-
-  const { createHubConnection, stopHubConnection } = useHubConnection(
-    userData.accessToken
-  );
-
-  useEffect(() => {
-    if (appState === "active" && userData !== null) {
-      createHubConnection();
-    }
-    if(appState === "background"||appState === "inactive" && userData !== null) {
-      stopHubConnection();
-    }
-    
-    console.log(appState);
-  }, [appState]);
-
-  useEffect(() => {
-    const appStateListener = AppState.addEventListener(
-      'change',
-      nextAppState => {
-        setAppState(nextAppState);
-      },
-    );
-    return () => {
-      appStateListener?.remove();
-    };
-  }, []);
+  
 
   return (
     <NavigationContainer>
       {isAuth && <MainNavigator />}
-      {!isAuth && didTryAutoLogin && <AuthScreen />} 
+      {!isAuth && didTryAutoLogin && <AuthScreen />}
       {!isAuth && !didTryAutoLogin && <StartUpScreen />}
     </NavigationContainer>
   );

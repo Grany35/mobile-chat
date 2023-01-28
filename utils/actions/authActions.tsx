@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useState } from "react";
+import backend from "../../constants/backend";
 import { authenticate, logout } from "../../store/authSlice";
 import { AuthResponse } from "../interfaces/AuthResponse";
 import { UserUpdateModel } from "../interfaces/userUpdateModel";
@@ -14,7 +15,7 @@ export const signUp = (
   password: string
 ) => {
   try {
-    const result = axios.post("http://localhost:5146/api/Auth/Register", {
+    const result = axios.post(backend.apiAddress + "api/Auth/Register", {
       firstName,
       lastName,
       email,
@@ -23,7 +24,7 @@ export const signUp = (
     console.log(result);
     console.log(password, email, firstName, lastName);
   } catch (error) {
-    console.log(error);
+    console.log("erorrburdamı", error);
   }
 };
 
@@ -31,7 +32,7 @@ export const signIn = (email: string, password: string) => {
   return async (dispatch) => {
     try {
       const result = (
-        await axios.post("http://localhost:5146/api/Auth/Login", {
+        await axios.post(backend.apiAddress + "api/Auth/Login", {
           email,
           password,
         })
@@ -52,9 +53,11 @@ export const signIn = (email: string, password: string) => {
       dispatch(authenticate(result));
       saveDataToStorage(result);
     } catch (error) {
+      console.log("burdamı", error);
+
       if (error instanceof Error) {
         //TODO: display error message
-        console.log(error.message);
+        // console.log(error.message);
       }
     }
   };
@@ -73,7 +76,7 @@ export const updateSignedInUserData = async (
   model: UserUpdateModel
 ) => {
   model.id = userId;
-  const url = "http://localhost:5146/api/Users/update-usersettings";
+  const url = backend.apiAddress + "api/Users/update-usersettings";
   await axios.post(url, model);
 };
 
